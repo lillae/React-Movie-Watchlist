@@ -1,6 +1,6 @@
 # React Movie Watchlist
 
-Created with React hooks, Redux, redux-persist, styled-components.
+Created with React hooks, Redux, redux-persist, styled-components, TMDB API.
 
 ## Description
 Search for Movies and create a Watchlist.
