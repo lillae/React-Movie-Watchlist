@@ -1,27 +1,25 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-import { useSelector } from 'react-redux';
-// import Nav from './Nav';
+// import { useSelector } from 'react-redux';
+// import { fadeIn2, fadeIn } from '../animations';
 
 const HeroSection = () => {
-  const { isLoading } = useSelector((state) => state.hero);
+  // const { isLoading } = useSelector((state) => state.hero);
+
   return (
-    <>
-      {isLoading && (
-        <StyledHero>
-          {/* <Nav /> */}
-          <StyledIntro>
-            <h3>Blade Runner 2049</h3>
-            <p>
-              Thirty years after the events of the first film, a new blade
-              runner, LAPD Officer K, unearths a long-buried secret that has the
-              potential to plunge what's left of society into chaos...
-            </p>
-          </StyledIntro>
-        </StyledHero>
-      )}
-    </>
+    <div>
+      <StyledHero>
+        <StyledIntro>
+          <h3>Blade Runner 2049</h3>
+          <p>
+            Thirty years after the events of the first film, a new blade runner,
+            LAPD Officer K, unearths a long-buried secret that has the potential
+            to plunge what's left of society into chaos...
+          </p>
+        </StyledIntro>
+      </StyledHero>
+    </div>
   );
 };
 

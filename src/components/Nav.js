@@ -1,9 +1,10 @@
 import React, { useState } from 'react';
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { fetchSearch } from '../actions/moviesAction';
 import { useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import { fetchSearch } from '../actions/moviesAction';
+import { motion } from 'framer-motion';
+import { fadeIn } from '../animations';
 
 const Nav = () => {
   const dispatch = useDispatch();
@@ -17,7 +18,7 @@ const Nav = () => {
     setTextInput('');
   };
   return (
-    <StyledNav>
+    <StyledNav variants={fadeIn} initial='hidden' animate='show'>
       <form className='search'>
         <input
           value={textInput}

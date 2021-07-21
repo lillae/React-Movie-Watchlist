@@ -8,8 +8,9 @@ import unavailable from '../img/denise-jans-WevidclYpdc-unsplash.jpg';
 import { addWatchlist } from '../actions/watchlistAction';
 import useLocalStorage from '../hooks/useLocalStorage';
 import Alert from '../components/Alert';
+import { fadeIn } from '../animations';
 
-const MovieDetail = () => {
+const MovieDetail = ({ pathId }) => {
   const dispatch = useDispatch();
   const { movie, isLoading } = useSelector((state) => state.detail);
   const { favorites, favIds } = useSelector((state) => state.favorites);
@@ -25,7 +26,7 @@ const MovieDetail = () => {
     const element = e.target;
     if (element.classList.contains('shadow')) {
       document.body.style.overflow = 'auto';
-      history.push('/');
+      history.goBack();
     }
   };
 
@@ -65,6 +66,9 @@ const MovieDetail = () => {
           <StyledDetails
             onLoad={() => changeText(movie.id)}
             className='shadow'
+            variants={fadeIn}
+            initial='hidden'
+            animate='show'
             style={{
               backgroundImage: ` url("${bgPath}${movie.backdrop_path}")`,
               backGroundPosition: 'center center',
@@ -149,7 +153,7 @@ const MovieDetail = () => {
 const StyledCard = styled(motion.div)`
   min-height: 100vh;
   width: 100%;
-  background: rgba(0, 0, 0, 0.5);
+  background: rgba(0, 0, 0, 0, 1);
   position: fixed;
   top: 0;
   left: 0;

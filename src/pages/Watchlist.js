@@ -1,6 +1,7 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import { Link } from 'react-router-dom';
+import MovieDetail from '../components/MovieDetail';
 //Components
 import Movie from '../components/Movie';
 
@@ -8,34 +9,71 @@ import Movie from '../components/Movie';
 import styled from 'styled-components';
 import { StyledMovies, StyledMovieList } from '../components/Movies';
 import { clearAll } from '../actions/watchlistAction';
-// import { motion } from 'framer-motion';
+import { useLocation, useHistory } from 'react-router-dom';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { popup } from '../animations';
 
 const Watchlist = () => {
+  const history = useHistory();
   const dispatch = useDispatch();
   const { favorites } = useSelector((state) => state.favorites);
+  const isMobile = window.innerWidth < 1200;
+  const location = useLocation();
+  const pathId = location.pathname.split('/')[2];
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  });
+  const controls = useAnimation();
 
   const onClear = () => {
     dispatch(clearAll());
   };
 
+  const handleClick = () => {
+    history.push('/watchlist');
+  };
+
+  useEffect(() => {
+    window.scroll(0, 0);
+  }, []);
+
+  useEffect(() => {
+    if (inView && !isMobile) {
+      controls.start('show');
+    }
+    if (!inView && !isMobile) {
+      controls.start('hidden');
+    }
+  }, [controls, inView, isMobile]);
+
   return (
-    <StyledWatchlist>
-      <nav>
-        <Link to='/'>Movie Database</Link>
-      </nav>
-      <div className='heading'>
-        <h2>Watchlist</h2>
-        <button onClick={onClear} type='submit' className='clearBtn'>
-          <i class='fas fa fa-trash'></i>
-        </button>
-      </div>
-      <div className='line'></div>
-      <StyledList>
-        {favorites.map((movie) => (
-          <Movie id={movie.id} poster={movie.poster_path} key={movie.id} />
-        ))}
-      </StyledList>
-    </StyledWatchlist>
+    <>
+      <StyledWatchlist ref={ref}>
+        <nav>
+          <Link to='/'>Movie Database</Link>
+        </nav>
+        <div className='heading'>
+          <h2>Watchlist</h2>
+          <button onClick={onClear} type='submit' className='clearBtn'>
+            <i className='fas fa fa-trash'></i>
+          </button>
+        </div>
+        <motion.div className='line'></motion.div>
+        <StyledList variants={popup} initial={controls} animate={controls}>
+          {favorites.map((movie) => (
+            <Movie
+              onClick={handleClick}
+              pathId={pathId}
+              id={movie.id}
+              poster={movie.poster_path}
+              key={movie.id}
+            />
+          ))}
+        </StyledList>
+      </StyledWatchlist>
+      {pathId && <MovieDetail />}
+    </>
   );
 };
 

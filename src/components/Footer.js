@@ -7,7 +7,7 @@ const Footer = () => {
       <div className='footer-info'>
         <StyledCodeInfo>
           <a
-            href='https://github.com/lillae/'
+            href='https://github.com/lillae/React-Movie-Watchlist/'
             target='_blank'
             rel='noopener noreferrer'
           >
@@ -66,6 +66,10 @@ const StyledCodeInfo = styled.div`
     }
     .github {
       font-size: 1.6rem;
+    }
+    &:hover {
+      color: var(--main);
+      transition: 350ms ease;
     }
   }
 `;

@@ -1,30 +1,68 @@
-import React from 'react';
-import styled from 'styled-components';
-import { motion } from 'framer-motion';
-import { imgPath } from '../api';
+import React, { useEffect } from 'react';
 import { useDispatch } from 'react-redux';
+import { Link, useLocation } from 'react-router-dom';
 import { loadDetail } from '../actions/detailsAction';
-import { Link } from 'react-router-dom';
+import styled from 'styled-components';
+import { imgPath } from '../api';
+//Animation
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { popup } from '../animations';
 
 const Movie = ({ poster, backdrop, isLargeRow, title, id }) => {
   const dispatch = useDispatch();
+  const location = useLocation();
+  const isMobile = window.innerWidth < 1200;
+  const pathId = location.pathname.split('/')[2];
+
+  const { ref, inView } = useInView({
+    threshold: 0.1,
+  });
+  const controls = useAnimation();
+
   const loadDetailHandler = () => {
     document.body.style.overflow = 'hidden';
     dispatch(loadDetail(id));
   };
 
+  useEffect(() => {
+    if (inView && !isMobile) {
+      controls.start('show');
+    }
+    if (!inView && !isMobile) {
+      controls.start('hidden');
+    }
+  }, [controls, inView, isMobile]);
+
   return (
     <>
       {(poster || backdrop) && (
-        <StyledMovie onClick={loadDetailHandler}>
-          <Link to={`/movie/${id}`}>
-            <img
-              src={`${imgPath}${isLargeRow ? backdrop : poster}`}
-              alt={poster}
-              className={`${!isLargeRow && 'portrait'}`}
-            />
-            <p>{title}</p>
-          </Link>
+        <StyledMovie
+          ref={ref}
+          onClick={loadDetailHandler}
+          variants={popup}
+          initial={controls}
+          animate={controls}
+        >
+          {pathId === '/watchlist' ? (
+            <Link to={`/watchlist/movie/${id}`}>
+              <img
+                src={`${imgPath}${isLargeRow ? backdrop : poster}`}
+                alt={poster}
+                className={`${!isLargeRow && 'portrait'}`}
+              />
+              <p>{title}</p>
+            </Link>
+          ) : (
+            <Link to={`/movie/${id}`}>
+              <img
+                src={`${imgPath}${isLargeRow ? backdrop : poster}`}
+                alt={poster}
+                className={`${!isLargeRow && 'portrait'}`}
+              />
+              <p>{title}</p>
+            </Link>
+          )}
         </StyledMovie>
       )}
     </>

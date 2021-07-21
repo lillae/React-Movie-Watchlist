@@ -5,30 +5,48 @@ import { loadMovies } from '../actions/moviesAction';
 //Components
 import Movie from '../components/Movie';
 import Nav from '../components/Nav';
+import imgPlaceholder from '../img/denise-jans-WevidclYpdc-unsplash.jpg';
 //Styling and Animation
 import styled from 'styled-components';
-import { motion } from 'framer-motion';
-// import { useLocation } from 'react-router-dom';
-import imgPlaceholder from '../img/denise-jans-WevidclYpdc-unsplash.jpg';
+import { motion, useAnimation } from 'framer-motion';
+import { useInView } from 'react-intersection-observer';
+import { lineAnim } from '../animations';
 
 const Movies = () => {
   const dispatch = useDispatch();
+
   const { trending, upcoming, scifi, thriller, searched } = useSelector(
     (state) => state.movies
   );
+  const { ref, inView } = useInView();
+  const controls = useAnimation();
 
   useEffect(() => {
     dispatch(loadMovies());
   }, [dispatch]);
+
+  useEffect(() => {
+    if (inView) {
+      controls.start('show');
+    }
+    if (!inView) {
+      controls.start('hidden');
+    }
+  }, [controls, inView]);
 
   return (
     <>
       <Nav />
       <StyledMovieList>
         {searched.length ? (
-          <div className='searchSection'>
-            <h2>Searched Movies</h2>
-            <div className='line'></div>
+          <div className='searchSection' ref={ref}>
+            <h2 ref={ref}>Searched Movies</h2>
+            <motion.div
+              className='line'
+              variants={lineAnim}
+              initial={controls}
+              animate={controls}
+            ></motion.div>
             <Searched>
               {searched
                 .filter(
@@ -50,14 +68,14 @@ const Movies = () => {
           ''
         )}
         <h2>Trending</h2>
-        <div className='line'></div>
+        <motion.div className='line'></motion.div>
         <StyledMovies>
           {trending.map((movie) => (
             <Movie id={movie.id} poster={movie.poster_path} key={movie.id} />
           ))}
         </StyledMovies>
         <h2>Upcoming Movies</h2>
-        <div className='line'></div>
+        <motion.div className='line'></motion.div>
         <StyledMovies>
           {upcoming.map((movie) => (
             <Movie
@@ -70,7 +88,7 @@ const Movies = () => {
           ))}
         </StyledMovies>
         <h2>Sci-fi</h2>
-        <div className='line'></div>
+        <motion.div className='line'></motion.div>
         <Larger>
           {scifi.map((movie) => (
             <Movie
@@ -83,7 +101,7 @@ const Movies = () => {
           ))}
         </Larger>
         <h2>Thriller & Mistery</h2>
-        <div className='line'></div>
+        <motion.div className='line'></motion.div>
         <Larger>
           {thriller.map((movie) => (
             <Movie
