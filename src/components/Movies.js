@@ -9,8 +9,8 @@ import imgPlaceholder from '../img/denise-jans-WevidclYpdc-unsplash.jpg';
 //Styling and Animation
 import styled from 'styled-components';
 import { motion, useAnimation } from 'framer-motion';
-import { useInView } from 'react-intersection-observer';
-import { lineAnim } from '../animations';
+// import { useInView } from 'react-intersection-observer';
+// import { popup } from '../animations';
 
 const Movies = () => {
   const dispatch = useDispatch();
@@ -18,35 +18,30 @@ const Movies = () => {
   const { trending, upcoming, scifi, thriller, searched } = useSelector(
     (state) => state.movies
   );
-  const { ref, inView } = useInView();
-  const controls = useAnimation();
+  // const { ref, inView } = useInView();
+  // const controls = useAnimation();
 
   useEffect(() => {
     dispatch(loadMovies());
   }, [dispatch]);
 
-  useEffect(() => {
-    if (inView) {
-      controls.start('show');
-    }
-    if (!inView) {
-      controls.start('hidden');
-    }
-  }, [controls, inView]);
+  // useEffect(() => {
+  //   if (inView) {
+  //     controls.start('show');
+  //   }
+  //   if (!inView) {
+  //     controls.start('hidden');
+  //   }
+  // }, [controls, inView]);
 
   return (
     <>
       <Nav />
       <StyledMovieList>
         {searched.length ? (
-          <div className='searchSection' ref={ref}>
-            <h2 ref={ref}>Searched Movies</h2>
-            <motion.div
-              className='line'
-              variants={lineAnim}
-              initial={controls}
-              animate={controls}
-            ></motion.div>
+          <div className='searchSection'>
+            <h2>Searched Movies</h2>
+            <motion.div className='line'></motion.div>
             <Searched>
               {searched
                 .filter(

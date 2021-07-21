@@ -9,3 +9,9 @@ export const loadHero = () => {
     type: 'LOADING_HERO',
   };
 };
+
+export const getHero = () => {
+  return {
+    type: 'GET_HERO',
+  };
+};

@@ -5,12 +5,15 @@ export const fadeIn = {
   show: {
     opacity: 1,
     transition: {
-      duration: 0.55,
+      delay: 0.3,
+      duration: 0.4,
+      when: 'beforeChildren',
+      staggerChildren: 0.4,
     },
     exit: {
       opacity: 0,
       transition: {
-        duration: 0.55,
+        duration: 0.3,
       },
     },
   },

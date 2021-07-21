@@ -1,16 +1,16 @@
 import React, { useEffect } from 'react';
 import styled from 'styled-components';
 import { motion } from 'framer-motion';
-// import { useSelector } from 'react-redux';
-// import { fadeIn2, fadeIn } from '../animations';
+import { useSelector } from 'react-redux';
+import { fadeIn } from '../animations';
 
 const HeroSection = () => {
   // const { isLoading } = useSelector((state) => state.hero);
 
   return (
     <div>
-      <StyledHero>
-        <StyledIntro>
+      <StyledHero variants={fadeIn} initial='hidden' animate='show'>
+        <StyledIntro variants={fadeIn}>
           <h3>Blade Runner 2049</h3>
           <p>
             Thirty years after the events of the first film, a new blade runner,
