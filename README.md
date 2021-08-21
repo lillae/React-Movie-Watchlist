@@ -1,6 +1,6 @@
 # React-Movie-Watchlist
 
-Created with React hooks, Redux, Redux-Persist, Styled Components, Framer Motion and the TMDb API.
+Created with React hooks,React-Router,  Redux, Redux-Persist, Styled Components, Framer Motion and the TMDb API.
 
 ## Description:
 Search for Movies and add them to your watchlist.
